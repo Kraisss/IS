@@ -53,7 +53,7 @@ namespace webtrades1
     }
     class MyContextInitializer : CreateDatabaseIfNotExists<webcontext>
     {
-        protected override void Seed(webcontext context)
+        protected override void Seed(webcontext context)//Вносим начальные данные при создании бд
         {
             //if (!context.Items.Any())
             //{
@@ -150,7 +150,7 @@ namespace webtrades1
             //}
         }
     }
-    public class ExchangeRateHistory
+    public class ExchangeRateHistory //класс изменения курса товара
     {
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
@@ -167,7 +167,7 @@ namespace webtrades1
         public Item Item { get; set; }
 
     }
-    public class Item
+    public class Item //класс товара
     {
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
@@ -184,7 +184,7 @@ namespace webtrades1
             RateHistory = new List<ExchangeRateHistory>();
         }
     }
-    public class ItemPersonAccount
+    public class ItemPersonAccount //класс баланса товара конкретного пользователя
     {
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
@@ -203,7 +203,7 @@ namespace webtrades1
         public Item Item { get; set; }
 
     }
-    public class PasswordHash
+    public class PasswordHash //класс для хэширования и соли
     {
 
         public static string CreateSalt()
@@ -225,7 +225,7 @@ namespace webtrades1
             return Convert.ToBase64String(hash);
         }
     }
-    public class Person
+    public class Person //класс пользователя
     {
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
@@ -264,7 +264,7 @@ namespace webtrades1
             Accounts = new List<ItemPersonAccount>();
         }
     }
-    public class Role
+    public class Role //класс роли
     {
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
@@ -272,7 +272,7 @@ namespace webtrades1
         [Required]
         public string Name { get; set; }
     }
-    public class TradeOperation
+    public class TradeOperation //класс торговой операции
     {
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }

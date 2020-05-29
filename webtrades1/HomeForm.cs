@@ -66,7 +66,7 @@ namespace webtrades1
             IQueryable<ExchangeRateHistory> histories = db.ExchangeRateHistories.Where(p => p.ItemId == item.Id).OrderBy(p => p.Id);
             List<ExchangeRateHistory> list = histories.ToList();
 
-            SeriesCollection series = new SeriesCollection();
+            SeriesCollection series = new SeriesCollection();//создаем график истории изменения курса товара
             ChartValues<double> ratevalues = new ChartValues<double>();
             List<string> dates = new List<string>();
             foreach(ExchangeRateHistory h in list)
@@ -97,7 +97,7 @@ namespace webtrades1
                 if (converted == false)
                     return;
 
-                Item item = db.Items.Find(id);
+                Item item = db.Items.Find(id);//находим историю изменения курса для выбранного товара
                 IQueryable<ExchangeRateHistory> histories = db.ExchangeRateHistories.Where(p => p.ItemId == item.Id).OrderByDescending(p=>p.Id);
                 dataGridView2.DataSource = histories.ToList();
                 GraphBuild();// строим график заново
@@ -105,13 +105,13 @@ namespace webtrades1
         }
         private void Updater()// Обновляем историю курса товара
         {
-            int index = dataGridView1.SelectedRows[0].Index;//находим по ее индексу элемент в базе данных
+            int index = dataGridView1.SelectedRows[0].Index;//находим элемент по индексу строки таблицы в базе данных
             int id = 0;
             bool converted = Int32.TryParse(dataGridView1[0, index].Value.ToString(), out id);
             if (converted == false)
                 return;
 
-            Item item = db.Items.Find(id);
+            Item item = db.Items.Find(id);//находим по выбранному товару историю курса и загружаем в таблицу
             IQueryable<ExchangeRateHistory> histories = db.ExchangeRateHistories.Where(p => p.ItemId == item.Id).OrderByDescending(p => p.Id);
             dataGridView2.DataSource = histories.ToList();
         }
@@ -145,15 +145,15 @@ namespace webtrades1
                 return;
             Item item = new Item();
 
-            item.Name = form.textBox1.Text;
+            item.Name = form.textBox1.Text;//Создаем товар по введенным данным
             item.ExchangeRate = Convert.ToDouble(form.textBox2.Text);
-            ExchangeRateHistory erh = new ExchangeRateHistory();
+            ExchangeRateHistory erh = new ExchangeRateHistory();//Делаем запись об изменении курса товара
             erh.DateOfChange = DateTime.Now;
             erh.ExchangeRateChange = item.ExchangeRate;
             erh.Item = item;
             item.RateHistory.Add(erh);
             
-            db.Items.Add(item);
+            db.Items.Add(item);//Сохраняем запись и товар в бд
             db.ExchangeRateHistories.Add(erh);
             db.SaveChanges();
             List<Person> users = db.People.Local.Where(u=>u.role.Name=="User").ToList();//для каждого юзера создаем баланс этого товара в бд
@@ -172,9 +172,9 @@ namespace webtrades1
 
                 }
             }
-            dataGridView1.Refresh();
-            Updater();
-            GraphBuild();
+            dataGridView1.Refresh();//Обновляем таблицу товаров 
+            Updater();//Обновляем таблицу истории курса
+            GraphBuild();//Заново строим график
 
         }
 
@@ -187,22 +187,22 @@ namespace webtrades1
                 bool converted = Int32.TryParse(dataGridView1[0, index].Value.ToString(), out id);
                 if (converted == false)
                     return;
-                Item item = db.Items.Find(id);
+                Item item = db.Items.Find(id);//находим товар и загружаем его данные в форму изменения курса
                 CourseChangeForm form = new CourseChangeForm();
                 form.textBox2.Text = item.Name;
                 form.textBox3.Text = item.ExchangeRate.ToString();
                 DialogResult result = form.ShowDialog(this);
                 if (result == DialogResult.Cancel)//После закрытия формы заносим полученные данные в базу
                     return;
-                item.ExchangeRate = Convert.ToDouble(form.textBox4.Text);
+                item.ExchangeRate = Convert.ToDouble(form.textBox4.Text);//Меняем курс товара
                 db.SaveChanges();
-                ExchangeRateHistory erh = new ExchangeRateHistory();
+                ExchangeRateHistory erh = new ExchangeRateHistory();//Делаем запись об изменении курса товара
                 erh.Item = item;
                 erh.ItemId = item.Id;
                 erh.ExchangeRateChange = item.ExchangeRate;
                 erh.DateOfChange = DateTime.Now;
                 item.RateHistory.Add(erh);
-                db.ExchangeRateHistories.Add(erh);
+                db.ExchangeRateHistories.Add(erh);//Сохраняем изменения в бд
                 db.SaveChanges();
                 dataGridView1.Refresh();
                 Updater();//Обновляем таблицу курса товара
@@ -236,8 +236,8 @@ namespace webtrades1
                 if (converted == false)
                     return;
 
-                Person person = db.People.Find(id);
-                if (person.Level == 0)
+                Person person = db.People.Find(id);//для найденного пользователя проверяем уровень доступа
+                if (person.Level == 0)//В каждом из двух случаев меняем надпись на кнопке управления доступом
                 {
                     button2.Text = "Разблокировать";
                 }
@@ -258,8 +258,8 @@ namespace webtrades1
                 if (converted == false)
                     return;
 
-                Person person = db.People.Find(id);
-                if (person.Level == 0)
+                Person person = db.People.Find(id);//Для найденного пользователя проверяем уровень доступа
+                if (person.Level == 0)//Меняем уровень доступа (для каждого случая) на противоположный и меняем надпись на кнопке
                 {
                     person.Level = 1;
                     db.SaveChanges();
@@ -280,12 +280,12 @@ namespace webtrades1
 
         private void textBox3_TextChanged(object sender, EventArgs e)//Поле для поиска User-a по логину
         {
-            if(String.IsNullOrEmpty(textBox3.Text))
+            if(String.IsNullOrEmpty(textBox3.Text))//Если поле пустое загружаем всех User-ов
             {
                 IQueryable<Person> users = db.People.Where(p => p.role.Name == "User").OrderByDescending(p => p.Id);
                 dataGridView3.DataSource = users.ToList();
             }
-            else
+            else//Иначе загружаем User-ов с таким логином
             {
                 IQueryable<Person> users = db.People.Where(p => p.role.Name == "User"&& p.Login.Contains(textBox3.Text)).OrderByDescending(p => p.Id);
                 dataGridView3.DataSource = users.ToList();
@@ -307,15 +307,15 @@ namespace webtrades1
                 if (converted == false)
                     return;
 
-                Person person = db.People.Find(id);
-                if(radioButton1.Checked)
+                Person person = db.People.Find(id);// Находим User-a по выбранной строке
+                if(radioButton1.Checked)//Формируем отчет по операциям за все время
                 {
                     List<TradeOperation> operations = new List<TradeOperation>();
-                    operations = db.TradeOperations.Where(u => u.PersonId == person.Id).ToList();
+                    operations = db.TradeOperations.Where(u => u.PersonId == person.Id).ToList();//Находим все операции для пользователя
                     string s = $"{DateTime.Now.ToLocalTime()}\r\nБыло найдено {operations.Count} операций  совершенных пользователем {person.Login} за все время";
-                    if (operations.Count != 0)//Если были найдены клиенты то
+                    if (operations.Count != 0)//Если были найдены операции
                     {
-                        foreach (TradeOperation t in operations)//Для каждого клиента выводим основную информацию о нем
+                        foreach (TradeOperation t in operations)//Выводим информацию по каждой операции
                         {
                             if (t.OperationType == "Buy")
                             {
@@ -328,19 +328,19 @@ namespace webtrades1
                         }
                         textBox2.Text = s;
                     }
-                    else
+                    else//Выводим что операций не найдено
                     {
                         textBox2.Text = s;
                     }
                 }
-                else
+                else//Формируем отчет по операциям за промежуток времени
                 {
                     List<TradeOperation> operations = new List<TradeOperation>();
-                    operations = db.TradeOperations.Where(u => u.PersonId == person.Id && u.DateOfOperation>=dateTimePicker1.Value && u.DateOfOperation<=dateTimePicker2.Value).ToList();
+                    operations = db.TradeOperations.Where(u => u.PersonId == person.Id && u.DateOfOperation>=dateTimePicker1.Value && u.DateOfOperation<=dateTimePicker2.Value).ToList();//Находим операции для пользователя за промежуток времени
                     string s = $"{DateTime.Now.ToLocalTime()}\r\nБыло найдено {operations.Count} операций  совершенных пользователем {person.Login} в период с {dateTimePicker1.Value} по {dateTimePicker2.Value}";
-                    if (operations.Count != 0)//Если были найдены клиенты то
+                    if (operations.Count != 0)//Если были найдены операции
                     {
-                        foreach (TradeOperation t in operations)//Для каждого клиента выводим основную информацию о нем
+                        foreach (TradeOperation t in operations)//Для каждой операции выводим информацию
                         {
                             if (t.OperationType == "Buy")
                             {
@@ -353,7 +353,7 @@ namespace webtrades1
                         }
                         textBox2.Text = s;
                     }
-                    else
+                    else//Не было найдено операций за промежуток
                     {
                         textBox2.Text = s;
                     }
@@ -368,12 +368,12 @@ namespace webtrades1
 
         private void button7_Click(object sender, EventArgs e)//Кнопка сохранения отчета в текстовый файл
         {
-            DirectoryInfo di = new DirectoryInfo(@"C:\OtchetyWebTrades");
-            if(!di.Exists)
+            DirectoryInfo di = new DirectoryInfo(@"C:\OtchetyWebTrades");//Проверяем наличие папки для сохранения отчетов
+            if(!di.Exists)//Если ее нет - создаем
             {
                 di.Create();
             }
-            string writepath = @"C:\OtchetyWebTrades\ОтчетЗа" + DateTime.Now.ToShortDateString() + ".txt";
+            string writepath = @"C:\OtchetyWebTrades\ОтчетЗа" + DateTime.Now.ToShortDateString() + ".txt";//Формируем отчет
             MessageBox.Show(writepath);
             try
             {
@@ -391,12 +391,12 @@ namespace webtrades1
 
         private void textBox4_TextChanged(object sender, EventArgs e)//Поле поиска товара по названию
         {
-            if (String.IsNullOrEmpty(textBox4.Text))
+            if (String.IsNullOrEmpty(textBox4.Text))//Если поле пустое выводим все товары
             {
                 IQueryable<Item> items = db.Items.OrderByDescending(p => p.Id);
                 dataGridView4.DataSource = items.ToList();
             }
-            else
+            else//Выводим товар с введенным названием
             {
                 IQueryable<Item> items = db.Items.Where(p =>  p.Name.Contains(textBox4.Text)).OrderByDescending(p => p.Id);
                 dataGridView4.DataSource = items.ToList();
@@ -419,15 +419,15 @@ namespace webtrades1
                 if (converted == false)
                     return;
 
-                Item item = db.Items.Find(id);
-                if (radioButton1.Checked)
+                Item item = db.Items.Find(id);//Формируем отчет по найденному товару
+                if (radioButton1.Checked)//формируем отчет по операциям за все время
                 {
                     List<TradeOperation> operations = new List<TradeOperation>();
-                    operations = db.TradeOperations.Where(u => u.ItemId==item.Id).ToList();
+                    operations = db.TradeOperations.Where(u => u.ItemId==item.Id).ToList();//Находим операции по выбранному товару
                     string s = $"{DateTime.Now.ToLocalTime()}\r\nБыло найдено {operations.Count} операций  совершенных по товару {item.Name} за все время";
-                    if (operations.Count != 0)//Если были найдены клиенты то
+                    if (operations.Count != 0)//Если были найдены операции
                     {
-                        foreach (TradeOperation t in operations)//Для каждого клиента выводим основную информацию о нем
+                        foreach (TradeOperation t in operations)//Для каждой операции выводим информацию
                         {
                             if (t.OperationType == "Buy")
                             {
@@ -440,19 +440,19 @@ namespace webtrades1
                         }
                         textBox2.Text = s;
                     }
-                    else
+                    else//Операций не было найдено
                     {
                         textBox2.Text = s;
                     }
                 }
-                else
+                else//Формируем отчет за промежуток времени
                 {
                     List<TradeOperation> operations = new List<TradeOperation>();
-                    operations = db.TradeOperations.Where(u => u.ItemId==item.Id && u.DateOfOperation >= dateTimePicker1.Value && u.DateOfOperation <= dateTimePicker2.Value).ToList();
+                    operations = db.TradeOperations.Where(u => u.ItemId==item.Id && u.DateOfOperation >= dateTimePicker1.Value && u.DateOfOperation <= dateTimePicker2.Value).ToList();//Находим операции по товару за промежуток времени
                     string s = $"{DateTime.Now.ToLocalTime()}\r\nБыло найдено {operations.Count} операций  совершенных по товару {item.Name} в период с {dateTimePicker1.Value} по {dateTimePicker2.Value}";
-                    if (operations.Count != 0)//Если были найдены клиенты то
+                    if (operations.Count != 0)//Если были найдены операции
                     {
-                        foreach (TradeOperation t in operations)//Для каждого клиента выводим основную информацию о нем
+                        foreach (TradeOperation t in operations)//Для каждой операции выводим информацию
                         {
                             if (t.OperationType == "Buy")
                             {
@@ -465,7 +465,7 @@ namespace webtrades1
                         }
                         textBox2.Text = s;
                     }
-                    else
+                    else//Операций не было найдено
                     {
                         textBox2.Text = s;
                     }
