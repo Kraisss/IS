@@ -41,42 +41,42 @@
             // 
             // textBox1
             // 
-            this.textBox1.Location = new System.Drawing.Point(69, 107);
+            this.textBox1.Location = new System.Drawing.Point(81, 120);
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(151, 20);
+            this.textBox1.Size = new System.Drawing.Size(151, 24);
             this.textBox1.TabIndex = 0;
             // 
             // textBox2
             // 
-            this.textBox2.Location = new System.Drawing.Point(69, 148);
+            this.textBox2.Location = new System.Drawing.Point(81, 161);
             this.textBox2.Name = "textBox2";
             this.textBox2.PasswordChar = '*';
-            this.textBox2.Size = new System.Drawing.Size(151, 20);
+            this.textBox2.Size = new System.Drawing.Size(151, 24);
             this.textBox2.TabIndex = 1;
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(25, 107);
+            this.label1.Location = new System.Drawing.Point(25, 120);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(38, 13);
+            this.label1.Size = new System.Drawing.Size(50, 18);
             this.label1.TabIndex = 2;
             this.label1.Text = "Логин";
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(18, 148);
+            this.label2.Location = new System.Drawing.Point(18, 161);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(45, 13);
+            this.label2.Size = new System.Drawing.Size(61, 18);
             this.label2.TabIndex = 3;
             this.label2.Text = "Пароль";
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(69, 174);
+            this.button1.Location = new System.Drawing.Point(81, 191);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(94, 23);
+            this.button1.Size = new System.Drawing.Size(151, 38);
             this.button1.TabIndex = 4;
             this.button1.Text = "Войти";
             this.button1.UseVisualStyleBackColor = true;
@@ -84,9 +84,9 @@
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(69, 203);
+            this.button2.Location = new System.Drawing.Point(81, 235);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(94, 23);
+            this.button2.Size = new System.Drawing.Size(151, 35);
             this.button2.TabIndex = 5;
             this.button2.Text = "Регистрация";
             this.button2.UseVisualStyleBackColor = true;
@@ -101,9 +101,10 @@
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Controls.Add(this.textBox2);
             this.groupBox1.Controls.Add(this.textBox1);
+            this.groupBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.groupBox1.Location = new System.Drawing.Point(12, 12);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(334, 271);
+            this.groupBox1.Size = new System.Drawing.Size(299, 315);
             this.groupBox1.TabIndex = 6;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Авторизация";
@@ -111,12 +112,13 @@
             // textBox3
             // 
             this.textBox3.BackColor = System.Drawing.Color.Red;
+            this.textBox3.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.textBox3.ForeColor = System.Drawing.Color.Yellow;
-            this.textBox3.Location = new System.Drawing.Point(173, 19);
+            this.textBox3.Location = new System.Drawing.Point(81, 23);
             this.textBox3.Multiline = true;
             this.textBox3.Name = "textBox3";
             this.textBox3.ReadOnly = true;
-            this.textBox3.Size = new System.Drawing.Size(155, 82);
+            this.textBox3.Size = new System.Drawing.Size(151, 82);
             this.textBox3.TabIndex = 6;
             this.textBox3.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.textBox3.Visible = false;
@@ -125,10 +127,12 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(363, 299);
+            this.ClientSize = new System.Drawing.Size(323, 339);
             this.Controls.Add(this.groupBox1);
+            this.MaximumSize = new System.Drawing.Size(339, 378);
+            this.MinimumSize = new System.Drawing.Size(339, 378);
             this.Name = "Form1";
-            this.Text = "Form1";
+            this.Text = "Авторизация";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
