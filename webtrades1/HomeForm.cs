@@ -431,11 +431,11 @@ namespace webtrades1
                         {
                             if (t.OperationType == "Buy")
                             {
-                                s += $"\r\nПользователь: {t.Person.Login}; Дата проведения:{t.DateOfOperation}; Тип операции:{t.OperationType}; Полученный баланс:-{t.Profit}";
+                                s += $"\r\nПользователь: {t.Person.Login}; Дата проведения:{t.DateOfOperation}; Тип операции:{t.OperationType}; Полученные средства:-{t.Profit}";
                             }
                             else
                             {
-                                s += $"\r\nПользователь: {t.Person.Login}; Дата проведения:{t.DateOfOperation}; Тип операции:{t.OperationType}; Полученный баланс:+{t.Profit}";
+                                s += $"\r\nПользователь: {t.Person.Login}; Дата проведения:{t.DateOfOperation}; Тип операции:{t.OperationType}; Полученные средства:+{t.Profit}";
                             }
                         }
                         textBox2.Text = s;
